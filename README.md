@@ -1,10 +1,10 @@
 # Architecture & Development Workflow: Global & Indian Culinary Advisor
 
-An interactive, production-ready Generative AI culinary assistant built using **LangChain Expression Language (LCEL)**, **OpenAI**, and **Streamlit**.
+> An interactive, production-ready Generative AI culinary assistant built using **LangChain Expression Language (LCEL)**, **OpenAI**, and **Streamlit**.
 
 ---
 
-Pattern 1: Direct Prompting & Memory (What you just built)
+Pattern 1: Direct Prompting & Memory (What I just built)
 
 How it works: Relies purely on the model's pre-trained parametric knowledge, system prompt rules, and conversational context windows.
 
