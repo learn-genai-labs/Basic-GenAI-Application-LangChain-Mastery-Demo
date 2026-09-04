@@ -105,6 +105,8 @@ Continuous Typing: Cursor focus is restored automatically, allowing rapid multi-
   * **`MessagesPlaceholder(variable_name="history")`**: Reserves a dynamic insertion point in the prompt template for past conversation history.
   * **`ChatMessageHistory`**: An in-memory data store holding chronological lists of `HumanMessage` and `AIMessage` objects.
   * **`RunnableWithMessageHistory`**: Wraps the base chain to automatically load context for a specific `session_id`, pass it to the model, and persist the new turn.
+ 
+  ![Alt text](https://github.com/learn-genai-labs/Basic-GenAI-Application-LangChain-Demo/blob/6f518e43efced4379d930ce3615649d8906e48ca/Assets/Multi_conversation_memory.png)
 
 ---
 
@@ -114,7 +116,7 @@ Continuous Typing: Cursor focus is restored automatically, allowing rapid multi-
   * **Classification Chain (`validator_chain`)**: A deterministic zero-temperature LLM call evaluates whether user input is a generic base ingredient (`tomato`) or an explicit prepared dish (`pizza`) originating from another cuisine.
   * **Generation Chain (`base_chain`)**: Only invoked if validation passes. If an authentic dish mismatch occurs, the application stops generation and raises a non-blocking warning banner.
 
-![Alt text](https://github.com/learn-genai-labs/LangChain-OpenAI-LangSmith/blob/5a63d2fac1648681d026c503e1f49ff401252e67/Assets/Prompt.png)
+![Alt text](https://github.com/learn-genai-labs/Basic-GenAI-Application-LangChain-Demo/blob/6f518e43efced4379d930ce3615649d8906e48ca/Assets/Mismatch_alert.png)
 
 ---
 
@@ -133,6 +135,8 @@ Continuous Typing: Cursor focus is restored automatically, allowing rapid multi-
   * **Two-Column Layout**: Left rail houses parameters (Cuisine, Diet, Engine metadata); the right column serves as the conversation workspace.
   * **Inverted Feed (Top-Down Flow)**: Positioned `st.chat_input` and the active streaming container at the top of the workspace, rendering past messages underneath in reverse order to eliminate manual scrolling.
   * **DOM Auto-Focus**: Injected a lightweight JavaScript hook via `components.html` to keep the text cursor focused inside the chat input box across all state reruns.
+
+![Alt text](https://github.com/learn-genai-labs/Basic-GenAI-Application-LangChain-Demo/blob/6f518e43efced4379d930ce3615649d8906e48ca/Assets/Home_Application.png)
 
 ---
 
