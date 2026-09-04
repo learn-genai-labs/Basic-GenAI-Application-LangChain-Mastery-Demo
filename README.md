@@ -4,6 +4,77 @@ An interactive, production-ready Generative AI culinary assistant built using **
 
 ---
 
+Pattern 1: Direct Prompting & Memory (What you just built)
+
+How it works: Relies purely on the model's pre-trained parametric knowledge, system prompt rules, and conversational context windows.
+
+Best for: Creative tasks, general reasoning, summarization, brainstorming, and format transformation.
+
+Limitations: Prone to hallucinating obscure facts; lacks access to private internal company data; limited by context window limits and token costs.
+
+---
+
+## 🔄 Architectural Deep Dive: Specialized Modules
+
+### 1. Two-Tier Classification & Cuisine Mismatch Guardrail
+
+#### Problem Statement
+LLMs are naturally permissive. If a user sets the cuisine category to **Pan-Indian** and requests **Pasta** or **Pizza**, naive models generate an Italian recipe without acknowledging the cross-cultural conflict. Conversely, rigid keyword matching falsely flags generic universal ingredients (e.g., classifying raw "tomato" as an invalid dish).
+
+#### Solution: Two-Tier Gatekeeper Pattern
+Before invoking the primary generative model, user queries pass through an upstream classification chain (`validator_chain`):
+
+---
+
+#### Key Implementation Details:
+* **Zero Temperature:** `temperature=0.0` ensures deterministic, repeatable entity classification.
+* **Separation of Concerns:** The validator strictly identifies the cultural origin of the query without generating recipe prose, keeping token usage under ~20 tokens.
+* **Non-Blocking Feedback:** If a mismatch is detected, execution halts before calling the heavier generation chain, preventing wasted tokens and displaying a dismissible warning banner.
+
+---
+
+### 2. Top-Feed Inverted Feed & Auto-Focus Mechanism
+
+#### Problem Statement
+In chat interfaces where inputs append to the bottom of the screen, users must repeatedly scroll past lengthy past outputs to see new generations. Furthermore, Streamlit's full-page reruns cause the browser to reset scroll positions to the top and lose focus on text inputs.
+
+#### Solution: Inverted DOM Flow with Target Streaming
+
+1. **Top-Pinned Layout Architecture:**
+   * `st.chat_input()` is positioned at the top of the workspace.
+   * Directly beneath the input, an `st.empty()` container is reserved exclusively for the active token stream.
+   * Historical turns are rendered below the stream using Python's `reversed()` function:
+
+   ```python
+   # Group linear message history into discrete user/assistant turns
+   turns = [history[i:i + 2] for i in range(0, len(history), 2)]
+
+   # Render in reverse order: newest turn at the top, older turns below
+   for turn in reversed(turns):
+       for msg in turn:
+           with st.chat_message(msg["role"]):
+               st.markdown(msg["content"])
+   
+
+DOM Cursor Auto-Focus:
+
+Streamlit widgets unmount and remount during script reruns.
+
+A zero-height JavaScript iframe hooks into the parent document DOM to restore cursor focus to the textarea without manual user clicks:
+
+JavaScript
+const focusInput = () => {
+    const textarea = window.parent.document.querySelector('textarea[data-testid="stChatInputTextArea"]');
+    if (textarea) textarea.focus();
+};
+setTimeout(focusInput, 150);
+User Experience Impact:
+Zero Scrolling: The latest generated output always begins immediately below the input field.
+
+Continuous Typing: Cursor focus is restored automatically, allowing rapid multi-turn follow-ups without manual navigation.
+
+---
+
 ## 🛠️ Step-by-Step Implementation
 
 ### Step 1: Environment Setup & API Key Isolation
