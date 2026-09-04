@@ -114,6 +114,8 @@ Continuous Typing: Cursor focus is restored automatically, allowing rapid multi-
   * **Classification Chain (`validator_chain`)**: A deterministic zero-temperature LLM call evaluates whether user input is a generic base ingredient (`tomato`) or an explicit prepared dish (`pizza`) originating from another cuisine.
   * **Generation Chain (`base_chain`)**: Only invoked if validation passes. If an authentic dish mismatch occurs, the application stops generation and raises a non-blocking warning banner.
 
+![Alt text](https://github.com/learn-genai-labs/LangChain-OpenAI-LangSmith/blob/5a63d2fac1648681d026c503e1f49ff401252e67/Assets/Prompt.png)
+
 ---
 
 ### Step 5: Real-Time Token Streaming
