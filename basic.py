@@ -16,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. Clean Crisp White Design System with High-Contrast Typography
+# 2. Clean Crisp White Design System with High-Contrast Typography & Alert Fixes
 st.markdown("""
 <style>
     /* Global Reset & Pure White Canvas */
@@ -139,6 +139,24 @@ st.markdown("""
 
     [data-testid="stChatMessage"] strong {
         color: #111827 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Warning/Alert Banner High-Contrast Black Font Fix */
+    [data-testid="stAlert"] {
+        background-color: #fffbeb !important;
+        border: 1px solid #fde68a !important;
+        color: #111827 !important;
+    }
+    [data-testid="stAlert"] * {
+        color: #111827 !important;
+    }
+    [data-testid="stAlert"] p, [data-testid="stAlert"] span {
+        color: #111827 !important;
+        font-weight: 500 !important;
+    }
+    [data-testid="stAlert"] strong {
+        color: #000000 !important;
         font-weight: 700 !important;
     }
 
@@ -397,11 +415,9 @@ with col_right:
 
     # 2. Render Feed in Reverse Order (Newest turn on top, older entries below)
     if st.session_state.chat_history:
-        # Group messages into user/assistant turns
         history = st.session_state.chat_history
         turns = [history[i:i + 2] for i in range(0, len(history), 2)]
 
-        # Reverse so newest turn is at the top
         for turn in reversed(turns):
             for msg in turn:
                 with st.chat_message(msg["role"]):
